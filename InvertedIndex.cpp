@@ -23,7 +23,7 @@ BST<IIData> &InvertedIndex::getInvertedIndex() {
 InvertedIndex &InvertedIndex::addDocument(const std::string &documentName) {
 
     std::ifstream file(documentName.c_str(), std::ifstream::in);
-    std::cout << documentName<< std::endl;
+    // std::cout << documentName<< std::endl;
 
     std::string word;
     for (int position = 1; (file >> word); ++position) {
@@ -45,6 +45,41 @@ InvertedIndex &InvertedIndex::addDocument(const std::string &documentName) {
 
 InvertedIndex &InvertedIndex::removeDocument(const std::string &documentName) {
     /* TODO */
+    removeDocumentHelper(documentName, this->invertedIndex.getRoot());
+    removeDocumentClean(this->invertedIndex.getRoot());
+    removeDocumentClean(this->invertedIndex.getRoot());
+    if(this->invertedIndex.getRoot() != NULL){
+        if(this->invertedIndex.getRoot()->data.getOccurrences().size() == 0){
+            invertedIndex.remove(IIData(invertedIndex.getRoot()->data.getWord()));
+        }
+    }
+    
+    return *this;
+}
+void InvertedIndex::removeDocumentClean(BSTNode<IIData>*current){
+    if(current == NULL){
+        ;
+    }
+    else{
+        if(current->data.getOccurrences().size() == 0){
+            //std::cout<<"removing "<< current->data.getWord()<<std::endl;
+            invertedIndex.remove(IIData(current->data.getWord()));
+        }
+        removeDocumentClean(current->left);
+        removeDocumentClean(current->right);
+    }
+    
+}
+void InvertedIndex::removeDocumentHelper(const std::string &documentName, BSTNode<IIData>*current){
+    if(current == NULL){
+        return;
+    }
+    else{
+        current->data.removeOccurrences(documentName);
+        removeDocumentHelper(documentName, current->left);
+        removeDocumentHelper(documentName, current->right);
+
+    }
 }
 
 InvertedIndex &InvertedIndex::searchWord(const std::string &word) {

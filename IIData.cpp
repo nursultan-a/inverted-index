@@ -38,19 +38,10 @@ void IIData::addOccurrence(const std::string &documentName, int position)
 {
     /* TODO */
     std::vector<std::pair<std::string, std::vector<int> > > list = this->getOccurrences();
-    std::cout << word <<" at: "<<documentName<<" "<<position<< " ii data lenth: "<<list.size()<<std::endl;
-
-    
-
-    for(int i = 0; i < list.size(); i++){
-        std::cout<<"document name: "<< list.at(i).first<< std::endl;
+    for(unsigned int i = 0; i < list.size(); i++){
         if(list.at(i).first == documentName){
-
-            std::cout<<"--------------------"<<std::endl;
-
             std::vector<int> newVector;
             newVector.push_back(position);
-
             list.at(i).second.push_back(position);
             setOccurrences(list);
             return;
@@ -59,12 +50,23 @@ void IIData::addOccurrence(const std::string &documentName, int position)
     std::vector<int> newVector;
     newVector.push_back(position);
     occurrences.push_back(std::make_pair(documentName, newVector));
-    std::cout<<"added document name : " <<occurrences.at(0).first<<std::endl;
 }
 
 void IIData::removeOccurrences(const std::string &documentName)
 {
     /* TODO */
+    std::vector<std::pair<std::string, std::vector<int> > > list = this->getOccurrences();
+
+    if(list.size() > 0){
+        for(unsigned int i = 0; i < list.size(); i++){
+            if(list.at(i).first == documentName){
+                list.erase(list.begin()+i);
+                setOccurrences(list);
+                return;
+            }
+        }
+    }
+    
 }
 
 bool IIData::operator<(const IIData &rhs) const

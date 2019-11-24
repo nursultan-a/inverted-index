@@ -22,6 +22,7 @@ public: // DO NOT CHANGE THIS PART.
 
 private: // YOU MAY ADD YOUR OWN UTILITY MEMBER FUNCTIONS HERE.
     void removeDocumentHelper(const std::string &documentName, BSTNode<IIData>*current);
+    void removeDocumentClean(BSTNode<IIData>*current);
 
 private: // DO NOT CHANGE THIS PART.
     BST<IIData> invertedIndex;
